@@ -165,7 +165,7 @@ img{
 let pintarProductos = document.querySelector('#lista-productos');
 
     const getProducts = async () => {
-        const response = await fetch('https://github.com/AlexanderQuispeQuino/calcula-.github.io-/blob/gh-pages/product.json');
+        const response = await fetch('./product.json');
 
         if (response.status !== 200) {
             throw new Error('fetch fallo');
