@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Calculadora</title>
+    <meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="./styles.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+<style type="text/css">
+	.container-precio-punto {
+    grid-area: container-precio-punto;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    color: #2d4d58;
+
+}
+
+.container-carrito {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 10px;
+    grid-template-areas: 'container-producto';
+}
+
+
+	
+	.info-producto {
+     padding: 15px;
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    grid-gap: 10px;
+    grid-template-areas:
+        'container-nombre-producto container-nombre-producto container-nombre-producto'
+        'container-precio-punto container-precio-punto container-precio-punto'
+        'container-quantity container-quantity container-quantity';
+}
+
+.container-producto-agredados{
+    background: transparent;
+    position: absolute;
+    right: 0;
+    visibility: hidden;
+    opacity: 0;
+}
+
+.container-producto-agredados .container-table{
+	background: white;
+    box-shadow: #d4d2d2 -4px 5px 14px;
+    border-radius: 15px;
+    padding: 15px;
+    margin: 35px 15px 0 0;
+    color: #383636;
+    text-align: center;
+}
+
+.container-icon-cart{
+	width: fit-content;
+    float: right;
+    cursor: pointer;
+}
+
+.container-icon-cart i{
+	font-size: 25px;
+}
+.container-icon-cart:hover> .container-producto-agredados{
+	/*display: block;*/
+    transition: 1s all ease;
+    visibility: visible;
+    opacity: 1;
+    z-index: 1;
+}
+
+.container-footer-table{
+	display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding-top: 10px;
+}
+
+.borrar-producto{
+	color: #ff0000;
+    font-size: 20px;
+}
+
+img{
+	/*background: #bf5eb3;*/
+    border-radius: 15px;
+}
+
+.container-footer-table a {
+	text-decoration: none;
+    padding: 10px 15px;
+    background: #2d4d58;
+    border-radius: 10px;
+    color: white;
+    font-size: 14px;
+}
+</style>
+
+<header>	
+		<div class="container-header">
+			<div class="container-logo">
+				LOGO
+			</div>
+			<div class="container-buscador">
+                <form action="" id="search-form">
+                    
+				    <input  class="buscador" type="text" id="buscar" name="search"  placeholder="Buscar.." >
+                </form>
+			</div>	
+			<div class="container-cart">
+				<div class="container-icon-cart"> 
+					<i class="fa fa-shopping-cart" aria-hidden="true"></i>
+					<div id="carrito" class="container-producto-agredados" >
+						<div class="container-table">
+							
+						
+	                                    <table id="lista-carrito" class="table">
+	                                        <thead>
+	                                            <tr>
+	                                                <th>Imagen</th>
+	                                                <th>Nombre</th>
+	                                                <th>Precio</th>
+	                                                <th>Puntos</th>
+	                                                <th>Borrar</th>
+	                                            </tr>
+	                                        </thead>
+	                                        <tbody>
+                                                
+                                            </tbody>
+	                                    </table>
+	                                    <div class="container-footer-table">
+	                                    	
+		                                    <a href="#" id="vaciar-carrito" class="btn btn-primary btn-block">Vaciar Carrito</a>
+		                                    <a href="#" id="procesar-pedido" class="btn btn-danger btn-block">Procesar
+		                                        Compra</a>
+	                                    </div>
+		                </div>                        	
+	       			
+				    </div>
+				</div>
+			</div>
+		</div>
+</header>
+<div class="body">
+
+    <div class="container-carrito">
+        <div class="container-producto" id="lista-productos">
+
+
+        </div>  
+
+<!--         <div class="container-calculadora">
+            
+    </div> -->
+</div>
+
+
+<script type="text/javascript">
+
+let pintarProductos = document.querySelector('#lista-productos');
+
+    const getProducts = async () => {
+        const response = await fetch('./product.json');
+
+        if (response.status !== 200) {
+            throw new Error('fetch fallo');
+        }
+        const data = await response.json();
+        return data;
+    };
+   
+    getProducts()
+        .then(data => {
+            // console.log('respuesta:', data);
+
+
+            let producto = data;
+             data.forEach(function (producto){
+                        pintarProductos.innerHTML += `
+
+                        <div class="card-producto" >
+                            <div class="imagen-producto">
+                                <img src="https://seytu.omnilife.com/uploads/images/products/detail/cosmetica/9501121.png">
+                            </div>
+                            <div class="info-producto">
+                                <div class="container-nombre-producto">
+                                    <h3 class="nombre-producto">${producto.nombre}</h3>
+                                </div>
+                                <div class="container-precio-punto">
+                                    <span class="precio-producto">S/ <span>${producto.precio}</span></span>
+                                    <span class="punto-producto">Ptos <span>${producto.punto}</span></span>
+                                </div>
+                                <div class="container-quantity">
+                                  <a href="" class="btn btn-block btn-primary agregar-carrito" data-id="${producto.id}">Agregar</a>
+                                 
+                                </div>
+                              
+
+                            </div>
+                        </div>
+                            
+
+                        `;
+
+                    })
+                }).catch(err => console.log('rejected:', err.message));
+
+      // const search = window['search-form']
+      const search =  document.getElementById('search-form');
+      
+      const cards = document.getElementsByClassName('card-producto');
+     
+         
+      search.addEventListener("keyup", function (event) {
+        event.preventDefault();
+        const q = event.target.value.toLowerCase();
+        
+            let newre = Array.from(cards).forEach((card) => {
+
+              
+                return card.children[1].children[0].querySelector("h3").textContent.toLowerCase().includes(q)
+                ? (card.style.display = "")
+                : (card.style.display = "none") 
+
+            })
+
+
+      })
+
+
+        
+
+
+//     getProducts()
+//         .then(data => {
+//             // console.log('respuesta:', data);
+//             let producto = data;
+//             const search = window['search-form']
+
+
+// search.addEventListener('submit', function (event) {
+//   event.preventDefault()
+//   const formData = new FormData(this)
+//   const query = formData.get('title')
+//   const data = searchproducto(query)
+
+//   // debugger
+//   console.log(data)
+
+//   if (data) {
+//     // return render(data)
+//     return data
+
+//   }
+
+//   return console.log('No encontramos tu producto')
+
+// })
+
+
+// function filterByTitle(title) {
+//   return producto.filter((producto) => {
+//     return producto.nombre.toLowerCase().includes(title.toLowerCase())
+                    
+//   })
+// }
+
+
+// function findById(id) {
+//   // return producto.filter((producto) => {
+//   return data.find((producto) => {
+//     return producto.id === parseInt(id, 10)
+//   })
+// }
+
+// function searchproducto(query) {
+//   if (isNaN(query)) {
+//     return filterByTitle(query)
+                
+
+//   }
+//   return [findById(query)]
+//   return findById(query)
+// }
+
+//              data.forEach(function (producto){
+//                         pintarProductos.innerHTML += `
+
+//                         <div class="card-producto" >
+//                             <div class="imagen-producto">
+//                                 <img src="https://seytu.omnilife.com/uploads/images/products/detail/cosmetica/9501121.png">
+//                             </div>
+//                             <div class="info-producto">
+//                                 <div class="container-nombre-producto">
+//                                     <h3 class="nombre-producto">${producto.nombre}</h3>
+//                                 </div>
+//                                 <div class="container-precio-punto">
+//                                     <span class="precio-producto">S/ <span>${producto.precio}</span></span>
+//                                     <span class="punto-producto">Ptos <span>${producto.punto}</span></span>
+//                                 </div>
+//                                 <div class="container-quantity">
+//                                   <a href="" class="btn btn-block btn-primary agregar-carrito" data-id="${producto.id}">Agregar</a>
+                                 
+//                                 </div>
+                              
+
+//                             </div>
+//                         </div>
+                            
+
+//                         `;
+//                     });
+
+// var render = function (template, selector) {
+//     var node = document.querySelector(selector);
+//     if (!node) return;
+//     node.innerHTML = template;
+// };
+// render(template, '#main');
+
+
+
+
+
+
+
+</script>
+
+<script src="./carrito.js">
+	
+</script>
+<script src="./pedido.js">
+	
+</script>
+
+<!-- <script src="./search.js">
+    
+</script> -->
+
+
+</body>
+</html>

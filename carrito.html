@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="./styles.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+  <style type="text/css">
+    .container-producto {
+        grid-template-columns: repeat(4,1fr) ;
+      }
+
+    @media screen and (max-width: 900px){
+      .container-producto {
+          grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media screen and (max-width: 500px){
+      .container-carrito {
+        grid-template-columns: 1fr;
+            grid-template-areas:
+        'container-producto'
+        'container-regresar'
+        ' container-calculadora';
+        grid-gap: 20px;
+      }
+
+      .container-producto {
+          grid-template-columns: 1fr;
+      }
+
+      h1, h2{
+        font-size: 25px;
+        margin: 0;
+        text-align: center;
+      }
+
+      .container-calculadora {
+        position: fixed;
+        bottom: 0;
+        transform: translateY(105px);
+        cursor: pointer;
+        transition: all ease 1s;
+    }
+
+    .container-calculadora:hover{
+      transform: translateY(0px);
+      
+
+    }
+}
+  </style>
+<header>
+  <div class="container-header">
+      <h1 style="margin: auto;">Productos seleccionados</h1>
+  </div>
+</header>
+<div class="body">
+    
+    <!-- <div class="container" id=""> -->
+        <div class="container-carrito" id="carrito" >
+
+            <div class="container-producto" id="lista-compra" >
+            </div> 
+              <div class="container-regresar">
+                  <span class="regresar" id="regresar">Regresar</span>
+              </div>                      
+                            
+        <div class="container-calculadora">
+
+          <h2>Totales</h2>
+             <div class="container-total-puntos">Puntos <span class="total-puntos"></span></div>
+            <div class="container-total"> Precio al público <span class="total"></span></div>
+<div class="container-porcentaje">
+    Al
+                <select name="porcentaje" class="porcentaje">
+  <option value="20" selected>20%</option> 
+  <option value="25" >25%</option>
+  <option value="30">30%</option>  
+  <option value="35" >35%</option>
+  <option value="40">40%</option> 
+</select> de descuento
+<span class="al-descuento"></span>
+</div>
+<div class="container-ganancia"> Ganancia <span  class="ganancia"></span></div>
+            
+            
+        </div>
+    </div>
+        </div>  
+
+
+<!-- </div> -->
+
+
+
+<script src="./carrito.js">
+    
+</script>
+
+
+<script src="./compra.js">
+
+</script>
+
+
+<script type="text/javascript">
+
+    const regresar= document.getElementById('regresar');
+    
+    regresar.addEventListener('click', () => {
+        window.history.back();
+    });
+
+    function quantityInput(element, options) {
+      const spinner = element;
+        let newVal;
+      const defaultOptions = {
+        min: 1,
+        max: 250,
+        // value: newVal,
+      };
+
+      options = Object.assign({}, defaultOptions, options);
+
+      const obj = {
+
+        input: spinner.querySelector('input[type="number"]'),
+        init() {
+          this.setup();
+          this.events();
+          // this.leerDatosProducto(producto);
+          return this;
+        },
+        setup() {
+
+          // this.input.value = options.value;
+          this.max = options.max;
+          this.min = options.min;
+
+          const qNav = document.createElement('div');
+          const qUp = document.createElement('div');
+          const qDown = document.createElement('div');
+
+          qNav.setAttribute('class', 'container-quantity-nav');
+          qUp.setAttribute('class', 'container-quantity-button container-quantity-button--up');
+          qDown.setAttribute('class', 'container-quantity-button container-quantity-button--down');
+
+          qUp.innerHTML = '+';
+          qDown.innerHTML = '-';
+          qNav.appendChild(qUp);
+          qNav.appendChild(qDown);
+          spinner.appendChild(qNav);
+
+          this.btnUp = spinner.querySelector('.container-quantity-button--up');
+          this.btnDown = spinner.querySelector('.container-quantity-button--down');
+        },
+        trigger() {
+          const event = document.createEvent('HTMLEvents');
+          event.initEvent('change', true, false);
+          return event;
+        },
+        events() {
+
+
+
+
+          this.btnUp.addEventListener('click', () => {
+            const oldValue = parseFloat(this.input.value);
+            let newVal;
+ 
+            if (oldValue >= this.max) {
+              newVal = oldValue;
+              
+            } else {
+              newVal = oldValue + 1;
+            }
+     
+            this.input.value = newVal;
+            this.input.dispatchEvent(this.trigger());
+
+          });
+        
+
+
+
+
+          this.btnDown.addEventListener('click', () => {
+            const oldValue = parseFloat(this.input.value);
+            let newVal;
+            if (oldValue <= this.min) {
+              newVal = oldValue;
+            } else {
+              newVal = oldValue - 1;
+            }
+            this.input.value = newVal;
+            console.log(this.input.value)
+            this.input.dispatchEvent(this.trigger());
+
+          });
+
+
+          this.input.addEventListener('change', () => {
+            if (parseInt(this.input.value, 16) < this.min) {
+              this.input.value = this.min;
+            }
+            if (parseInt(this.input.value, 16) > this.max) {
+              this.input.value = this.max;
+            }
+          });
+        },
+      }
+      return obj.init();
+    }
+
+    const numberInputs = document.querySelectorAll(".container-quantity");
+
+    if (numberInputs.length > 0) {
+      numberInputs.forEach((el, index) => {
+        quantityInput(el, {
+
+          min: 0,
+          max: 50,
+          // value: ´${numberInputs.value}´
+        });
+      
+      });
+    }
+
+
+
+</script>
+</body>
+</html>

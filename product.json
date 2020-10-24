@@ -1,0 +1,58 @@
+[
+  {
+    "id":1,
+    "nombre": "MAGNUS CAJA 30 SOBRES",
+    "precio": 110.00,
+    "punto": 50,
+    "presentacion": "caja"
+  },
+  {
+    "id":2,
+    "nombre": "OMNIPLUS SUPREME POLVO ACAI",
+    "precio": 173.00,
+    "punto": 78,
+    "presentacion":"caja"
+  },
+  {
+    "id":3,
+    "nombre": "POWER MAKER",
+    "precio": 199.00,
+    "punto": 104,
+    "presentacion":"caja"
+  },
+  {
+    "id":4,
+    "nombre": "Madame Uppercut",
+    "precio": 39,
+    "punto": 20,
+    "presentacion":"caja"
+  },
+  {
+    "id":5,
+    "nombre": "afdasd Uppercut",
+    "precio": 39,
+    "punto": 20,
+    "presentacion":"caja"
+  },
+  {
+    "id":6,
+    "nombre": "asdad Uppercut",
+    "precio": 39,
+    "punto": 20,
+    "presentacion":"caja"
+  },
+  {
+    "id":7,
+    "nombre": "Madame 1231",
+    "precio": 39,
+    "punto": 20,
+    "presentacion":"caja"
+  },
+  {
+    "id":8,
+    "nombre": "hola mundo",
+    "precio": 39,
+    "punto": 20,
+    "presentacion":"caja"
+  }
+]
